@@ -26,14 +26,14 @@ function SearchBar() {
     console.log(weatherData);
     const getWindDirection = (deg) => {
 
-      if (deg >= 337.5 || deg < 22.5) return "N";
-      if (deg >= 22.5 && deg < 67.5) return "NE";
-      if (deg >= 67.5 && deg < 112.5) return "E";
-      if (deg >= 112.5 && deg < 157.5) return "SE";
-      if (deg >= 157.5 && deg < 202.5) return "S";
-      if (deg >= 202.5 && deg < 247.5) return "SW";
-      if (deg >= 247.5 && deg < 292.5) return "W";
-      if (deg >= 292.5 && deg < 337.5) return "NW";
+      if (deg >= 337.5 || deg < 22.5) return "North";
+      if (deg >= 22.5 && deg < 67.5) return "North East";
+      if (deg >= 67.5 && deg < 112.5) return "East";
+      if (deg >= 112.5 && deg < 157.5) return "South East";
+      if (deg >= 157.5 && deg < 202.5) return "South";
+      if (deg >= 202.5 && deg < 247.5) return "South West";
+      if (deg >= 247.5 && deg < 292.5) return "West";
+      if (deg >= 292.5 && deg < 337.5) return "North West";
 
     }
 
@@ -51,6 +51,7 @@ function SearchBar() {
       humidity: weatherData.main.humidity,
       windSpeed: windSpeed,
       windDirection: getWindDirection(weatherData.wind.deg),
+      windDeg: weatherData.wind.deg,
       sunrise: sunrise,
       sunset: sunset,
       weather: weatherData.weather[0].description,
@@ -110,6 +111,7 @@ function SearchBar() {
                 {forecast.map((day) => (
                   <div className="flex justify-between" key={day.dt_txt}>
                     <div className="flex gap-4">
+                      <img src={`https://openweathermap.org/payload/api/media/file/${cityData.img}.png`} alt="" className="w-8"/>
                       <p>
                         {
                           new Date(day.dt_txt).toDateString() === new Date().toDateString()
@@ -133,32 +135,64 @@ function SearchBar() {
 
 
             </div>
-            <div className="grid grid-cols-2 gap-2 border p-4">
+            <div className="grid grid-cols-2 gap-2 border p-2">
               <div className="grid grid-rows-2 gap-2">
-                <p className="border"></p>
+                <div className="flex border">
+                  <div>
+                    <p>{cityData.windDirection}</p>
+                    <p>{cityData.windSpeed} km/h</p>
+                  </div>
+                  <div className="border relative w-24 h-24 rounded-full">
+
+                    <p className="absolute top-0 left-1/2 -translate-x-1/2">
+                      N
+                    </p>
+                    <p className="absolute right-2 top-1/2 -translate-y-1/2">
+                      E
+                    </p>
+                    <p className="absolute bottom-0 left-1/2 -translate-x-1/2">
+                      S
+                    </p>
+                    <p className="absolute left-2 top-1/2 -translate-y-1/2">
+                      W
+                    </p>
+                    <div
+                      className="absolute inset-0 flex items-center justify-center"
+                      style={{
+                        transform: `rotate(${cityData.windDeg}deg)`
+                      }}
+                    >
+                      <span className="text-3xl">↑</span>
+                    </div>
+                  </div>
+
+                </div>
+
+
+
                 <div className="border">
-                  <p>Sunrise{cityData.sunrise}</p>
-                  <p>Sunset{cityData.sunset}</p>
+                  <p>Sunrise {cityData.sunrise}</p>
+                  <p>Sunset {cityData.sunset}</p>
                 </div>
               </div>
               <div>
                 <div className="flex justify-between mb-2">
-                  <p>Humidity</p> 
+                  <p>Humidity</p>
                   <p>{cityData.humidity}%</p>
                 </div>
                 <div className="flex justify-between mb-2">
-                  <p>Feels like </p> 
+                  <p>Feels like </p>
                   <p>{Math.floor(cityData.feelsLike)}°</p>
                 </div>
                 <div className="flex justify-between mb-2">
-                  <p>Pressure </p> 
+                  <p>Pressure </p>
                   <p>{cityData.pressure}mbar</p>
                 </div>
                 <div className="flex justify-between">
-                  <p>Chance of rain </p> 
+                  <p>Chance of rain </p>
                   <p>{Math.floor(forecast[0].pop * 100)}%</p>
                 </div>
-                
+
               </div>
 
             </div>
