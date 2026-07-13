@@ -4,39 +4,72 @@ import rainySky from "../img/raining.jpg"
 import thunderstorm from "../img/raining.jpg"
 import snow from "../img/snow.png"
 import foggy from "../img/foggy.png"
+import search from "../img/icons8-search-48.png"
 
 import { useEffect, useState } from "react";
 
 function SearchBar() {
   const [city, setCity] = useState("")
   const [cityData, setCityData] = useState(null)
+  const [forecast, setForecast] = useState([])
 
   const getData = async (city) => {
-    const res = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${import.meta.env.VITE_WEATHER_API}&units=metric`)
+    const weatherRes = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${import.meta.env.VITE_WEATHER_API}&units=metric`)
+    const weatherData = await weatherRes.json()
 
-    const data = await res.json()
-    console.log(data);
+    const forecastRes = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${import.meta.env.VITE_WEATHER_API}&units=metric`)
+    const forecastData = await forecastRes.json()
+    setForecast(forecastData.list.filter((item) =>
+      item.dt_txt.includes("12:00:00")))
+
+
+    console.log(weatherData);
+    const getWindDirection = (deg) => {
+
+      if (deg >= 337.5 || deg < 22.5) return "N";
+      if (deg >= 22.5 && deg < 67.5) return "NE";
+      if (deg >= 67.5 && deg < 112.5) return "E";
+      if (deg >= 112.5 && deg < 157.5) return "SE";
+      if (deg >= 157.5 && deg < 202.5) return "S";
+      if (deg >= 202.5 && deg < 247.5) return "SW";
+      if (deg >= 247.5 && deg < 292.5) return "W";
+      if (deg >= 292.5 && deg < 337.5) return "NW";
+
+    }
+
+    const sunrise = new Date(weatherData.sys.sunrise * 1000).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+    const sunset = new Date(weatherData.sys.sunset * 1000).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+    const windSpeed = Math.floor(weatherData.wind.speed * 3.6);
+
     setCityData({
-      name: data.name,
-      temp: data.main.temp,
-      maxTemp: data.main.temp_max,
-      minTemp: data.main.temp_min,
-      humidity: data.main.humidity,
-      windSpeed: data.wind.speed,
-      weather: data.weather[0].description,
-      img: data.weather[0].icon,
-      condition: data.weather[0].main
+      name: weatherData.name,
+      temp: weatherData.main.temp,
+      feelsLike: weatherData.main.feels_like,
+      pressure: weatherData.main.pressure,
+      maxTemp: weatherData.main.temp_max,
+      minTemp: weatherData.main.temp_min,
+      humidity: weatherData.main.humidity,
+      windSpeed: windSpeed,
+      windDirection: getWindDirection(weatherData.wind.deg),
+      sunrise: sunrise,
+      sunset: sunset,
+      weather: weatherData.weather[0].description,
+      img: weatherData.weather[0].icon,
+      condition: weatherData.weather[0].main
     })
 
   }
+  console.log(forecast);
+
 
   useEffect(() => {
     const fetchWeather = async () => {
       await getData("lucknow")
     }
-
     fetchWeather()
   }, [])
+
+
 
   const weatherImages = {
     Clear: clearSky,
@@ -48,24 +81,88 @@ function SearchBar() {
     Mist: foggy,
     Fog: foggy,
     Haze: foggy
+
   }
+
+
 
   return (
     <>
       {cityData && (
-        <div className="mx-auto max-w-3xl min-h-screen bg-cover bg-center" style={{
+        <div className="mx-auto max-w-3xl min-h-screen bg-cover bg-center pt-4" style={{
           backgroundImage: `url(${weatherImages[cityData.condition]})`
         }}>
-          <div className="text-center">
-            <input onChange={(e) => setCity(e.target.value)} type="text" placeholder="Enter city name" />
-            <button onClick={() => getData(city)}>Search</button>
+          <div className="text-center flex justify-center gap-2 pt-2">
+            <input onChange={(e) => setCity(e.target.value)} type="text" placeholder="Enter city name" className="border border-white rounded-xl px-4" />
+            <img className="w-8 cursor-pointer" src={search} onClick={() => getData(city)} />
           </div>
-          <h1 className="text-center text-5xl font-bold">{cityData.name}</h1>
+          <h1 className="text-center text-5xl font-bold mt-4">{cityData.name}</h1>
           <div className="text-center">
             <img className="mx-auto" src={`https://openweathermap.org/payload/api/media/file/${cityData.img}.png`} alt="" />
             <p>{cityData.weather}</p>
           </div>
           <h2 className="text-center text-5xl font-bold">{Math.floor(cityData.temp)}&deg;C</h2>
+          <div className="grid grid-cols-2 mt-4 gap-2">
+            <div className="border p-4">
+              <p>5 day forecast</p>
+              <div>
+
+                {forecast.map((day) => (
+                  <div className="flex justify-between" key={day.dt_txt}>
+                    <div className="flex gap-4">
+                      <p>
+                        {
+                          new Date(day.dt_txt).toDateString() === new Date().toDateString()
+                            ? "Today"
+                            : new Date(day.dt_txt).toLocaleDateString("en-US", {
+                              weekday: "short"
+                            })
+                        }
+                      </p>
+                      <p >{(day.weather[0].description)[0].toUpperCase() + (day.weather[0].description.slice(1).toLowerCase())}</p>
+                    </div>
+                    <p>
+                      {Math.floor(day.main.temp_min)}°/
+                      {Math.floor(day.main.temp_max)}°
+                    </p>
+                  </div>
+                ))
+                }
+
+              </div>
+
+
+            </div>
+            <div className="grid grid-cols-2 gap-2 border p-4">
+              <div className="grid grid-rows-2 gap-2">
+                <p className="border"></p>
+                <div className="border">
+                  <p>Sunrise{cityData.sunrise}</p>
+                  <p>Sunset{cityData.sunset}</p>
+                </div>
+              </div>
+              <div>
+                <div className="flex justify-between mb-2">
+                  <p>Humidity</p> 
+                  <p>{cityData.humidity}%</p>
+                </div>
+                <div className="flex justify-between mb-2">
+                  <p>Feels like </p> 
+                  <p>{Math.floor(cityData.feelsLike)}°</p>
+                </div>
+                <div className="flex justify-between mb-2">
+                  <p>Pressure </p> 
+                  <p>{cityData.pressure}mbar</p>
+                </div>
+                <div className="flex justify-between">
+                  <p>Chance of rain </p> 
+                  <p>{Math.floor(forecast[0].pop * 100)}%</p>
+                </div>
+                
+              </div>
+
+            </div>
+          </div>
         </div>
       )
       }
