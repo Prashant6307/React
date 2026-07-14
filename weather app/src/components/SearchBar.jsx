@@ -103,8 +103,8 @@ function SearchBar() {
             <p>{cityData.weather}</p>
           </div>
           <h2 className="text-center text-5xl font-bold">{Math.floor(cityData.temp)}&deg;C</h2>
-          <div className="grid grid-cols-2 mt-4 gap-2">
-            <div className="border p-4">
+          <div className="grid grid-cols-2 mt-4 gap-2 p-2">
+            <div className="p-2 bg-gray-200/25 text-white font-bold backdrop-blur-md rounded-3xl">
               <p>5 day forecast</p>
               <div>
 
@@ -135,9 +135,9 @@ function SearchBar() {
 
 
             </div>
-            <div className="grid grid-cols-2 gap-2 border p-2">
+            <div className="grid grid-cols-2 gap-2 font-bold ">
               <div className="grid grid-rows-2 gap-2">
-                <div className="flex border">
+                <div className="flex justify-between bg-gray-200/25 backdrop-blur text-white p-2 rounded-3xl">
                   <div>
                     <p>{cityData.windDirection}</p>
                     <p>{cityData.windSpeed} km/h</p>
@@ -170,12 +170,12 @@ function SearchBar() {
 
 
 
-                <div className="border">
+                <div className="bg-gray-200/25 backdrop-blur text-white p-2 rounded-3xl">
                   <p>Sunrise {cityData.sunrise}</p>
                   <p>Sunset {cityData.sunset}</p>
                 </div>
               </div>
-              <div>
+              <div className="bg-gray-200/25 backdrop-blur text-white p-2 rounded-3xl">
                 <div className="flex justify-between mb-2">
                   <p>Humidity</p>
                   <p>{cityData.humidity}%</p>
