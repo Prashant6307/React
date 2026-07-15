@@ -98,20 +98,20 @@ function SearchBar() {
     Haze: foggy
 
   }
-
-
-
+  const handleSearch = (e) => {
+    if (e.key === "Enter" && city.trim() !== "") {
+      getData(city)
+    }
+  }
 
   return (
     <>
-
-
       {cityData && (
         <div className="mx-auto w-full max-w-3xl min-h-screen bg-cover bg-center pt-4" style={{
           backgroundImage: `url(${weatherImages[cityData.condition]})`
         }}>
           <div className="text-center flex justify-center gap-2 pt-2">
-            <input onChange={(e) => setCity(e.target.value)} type="text" placeholder="Enter city name" className="border border-white rounded-xl px-4" />
+            <input onChange={(e) => setCity(e.target.value)}  onKeyDown={handleSearch} type="text" placeholder="Enter city name" className="border border-white rounded-xl px-4" />
             <img className="w-8 cursor-pointer" src={search} onClick={() => getData(city)} />
           </div>
           <h1 className="text-center text-5xl font-bold mt-4">{cityData.name}</h1>
@@ -147,9 +147,7 @@ function SearchBar() {
                   </div>
                 ))
                 }
-
               </div>
-
 
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2 font-bold ">
@@ -185,8 +183,6 @@ function SearchBar() {
 
                 </div>
 
-
-
                 <div className="bg-gray-200/25 shadow-lg backdrop-blur text-white p-2 rounded-3xl">
                   <p>Sunrise {cityData.sunrise}</p>
                   <p>Sunset {cityData.sunset}</p>
@@ -209,15 +205,12 @@ function SearchBar() {
                   <p>Chance of rain </p>
                   <p>{Math.floor(forecast[0].pop * 100)}%</p>
                 </div>
-
               </div>
-
             </div>
           </div>
         </div>
       )
       }
-
     </>
   )
 }
