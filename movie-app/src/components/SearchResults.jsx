@@ -11,7 +11,7 @@ function SearchResults() {
 
 
     useEffect(() => {
-
+        if(!query) return
         const getMovie = async (query) => {
             const res = await fetch(`https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${query}`)
             const data = await res.json()

@@ -10,6 +10,7 @@ function Header({setSearchResults}) {
     const navigate = useNavigate();
 
     const handleSearch = async(value) => {
+        if(!value) return
         const res = await fetch(`https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${value}`)
         const data = await res.json()
         setSearchResults(data.results)
