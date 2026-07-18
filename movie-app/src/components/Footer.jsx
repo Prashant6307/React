@@ -1,12 +1,62 @@
+import { useEffect, useState } from "react"
 import logo_bg from "../images/logo-bg.png"
 
 function Footer() {
+
+    // const [count, setCount] = useState(0)
+
+    const [tagline, setTagline] = useState("");
+    const [index, setIndex] = useState(0);
+
+    const taglines = [
+        "Explore the universe of movies",
+        "Your galaxy of entertainment",
+        "Discover movies beyond the ordinary",
+        "Orbit through endless stories"
+    ];
+
+    useEffect(() => {
+        let i = 0;
+        let timeout;
+
+        const typing = setInterval(() => {
+            setTagline(taglines[index].slice(0, i));
+
+            i++;
+
+            if (i > taglines[index].length) {
+                clearInterval(typing);
+
+                timeout = setTimeout(() => {
+                    setIndex((prev) => (prev + 1) % taglines.length);
+                }, 2000);
+            }
+
+        }, 80);
+
+        return () => {
+            clearInterval(typing);
+            clearTimeout(timeout);
+        };
+
+    }, [index]);
+
+
     return (
-        <div className="bg-[#0B1120] text-white font-bold">
-            <div className=" max-w-7xl mx-auto py-8">
-                <div className="flex items-center">
+        <div className="bg-[#0B1120] text-white font-bold p-8">
+            <div className=" max-w-7xl mx-auto ">
+                <div className="flex items-center gap-4">
                     <img src={logo_bg} alt="" className="max-w-20" />
-                    <h1 className="text-3xl font-bold text-white">Movie Orbit</h1>
+                    <h1 className="flex items-center gap-2 text-3xl font-bold text-white">
+                        <span className="text-white">Movie</span>
+                        <span className="bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent">
+                            Orbit
+                        </span>
+                    </h1>
+                    <p className="bg-gradient-to-r from-blue-300 to-purple-300 bg-clip-text text-transparent text-xl">
+                        {tagline}
+                        <span className="animate-pulse text-blue-400">|</span>
+                    </p>
                 </div>
                 <h3>
                     Your ultimate destination for discovering movies,
@@ -52,10 +102,10 @@ function Footer() {
                     or certified by TMDB.</p>
 
                 <div className="flex gap-16 mt-12">
-                    <h3>© 2026 Movie Orbit</h3> 
+                    <h3>© 2026 Movie Orbit</h3>
                     <h3> Privacy | Terms | Cookies</h3>
                 </div>
-                      
+
             </div>
 
         </div>
