@@ -65,7 +65,7 @@ function MovieDetails() {
     }, [movieId])
 
     return (
-        <div className="bg-black ">
+        <div className="bg-[#070B14] ">
             {details && (
                 <div className="max-w-7xl mx-auto">
                     <div className="relative flex aspect-video">
@@ -74,7 +74,7 @@ function MovieDetails() {
                             showTrailer && trailer ? (<>
                                 <button
                                     onClick={() => setShowTrailer(false)}
-                                    className="absolute top-4 right-4 z-10 text-white text-3xl"
+                                    className="absolute top-4 right-4 z-10 text-white text-3xl bg-transparent border border-[#64748B] hover:border-[#8B5CF6]"
                                 >
                                     ✕
                                 </button>
@@ -92,7 +92,7 @@ function MovieDetails() {
                                         alt={details.title}
                                         className="w-full h-full object-cover"
                                     />
-                                    <div className="absolute p-4 text-gray font-bold bg-gradient-to-r from-black to-transparent text-gray-200 h-full ">
+                                    <div className="absolute p-4 text-gray font-bold bg-gradient-to-r from-[#070B14] via-[#070B14]/70 to-transparent text-gray-200 h-full ">
                                         <p className=" text-white text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-wide drop-shadow-2xl">{details.title}</p>
                                         <div className="flex items-center gap-8 my-12 text-3xl">
                                             <p>⭐{(details.vote_average).toFixed(1)}</p>
@@ -102,7 +102,7 @@ function MovieDetails() {
                                         <p className="max-w-[50%] text-[8px] sm:text-sm md:text-lg lg:text-xl ">{details.overview}</p>
 
 
-                                        <button onClick={() => setShowTrailer(true)} className="flex items-center mt-4 text-lg">
+                                        <button onClick={() => setShowTrailer(true)} className="flex items-center mt-4 text-lg border-[2px] border-[#1E293B] pl-0 p-2 rounded-xl cursor-pointer">
                                             <img src={play_btn} alt="" className="w-20 " />
                                             Watch Trailer</button>
                                     </div>
@@ -120,7 +120,7 @@ function MovieDetails() {
                                 cast.cast?.filter((actor) => actor.profile_path).map((actor) => (
                                     <div
                                         key={actor.id}
-                                        className="min-w-[150px] bg-gray-800 rounded-xl overflow-hidden"
+                                        className="min-w-[150px] bg-gray-800 rounded-xl overflow-hidden bg-[#161D2F] border border-[#1E293B] hover:bg-[rgba(59,130,246,0.25)] cursor-pointer"
                                     >
                                         <img
                                             src={`https://image.tmdb.org/t/p/w185${actor.profile_path}`}
@@ -166,7 +166,7 @@ function MovieDetails() {
                                 similarMovies.results?.filter((result) => result.backdrop_path).map((result) => (
                                     <div onClick={() => navigate(`/movie/${result.id}`)}
                                         key={result.id}
-                                        className="min-w-[150px] bg-gray-800 rounded-xl overflow-hidden"
+                                        className="min-w-[150px] bg-gray-800 rounded-xl overflow-hidden bg-[#161D2F] border border-[#1E293B] hover:bg-[rgba(59,130,246,0.25)] cursor-pointer"
                                     >
 
                                         <img

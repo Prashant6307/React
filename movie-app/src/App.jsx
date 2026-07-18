@@ -3,6 +3,7 @@ import Home from "./components/Home";
 import Header from "./components/Header";
 import { useState } from "react";
 import MovieDetails from "./components/MovieDetails";
+import Footer from "./components/Footer";
 
 
 function App() {
@@ -18,8 +19,9 @@ function App() {
           path="/movie/:movieId"
           element={<MovieDetails />}
         />
-
+      
       </Routes>
+      <Footer />
 
     </BrowserRouter>
 

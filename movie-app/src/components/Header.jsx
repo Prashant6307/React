@@ -17,31 +17,31 @@ function Header({setSearchResults}) {
         
     }
     return (
-        <div className="bg-black">
-            <div className="flex justify-between items-center gap-4  text-white px-4 py-4 sm:px-2 sm:py-2 max-w-7xl mx-auto">
+        <div className="bg-[rgba(7,11,20,0.85)]">
+            <div className="flex justify-between items-center font-bold gap-4  px-4 py-4 sm:px-2 sm:py-2 max-w-7xl mx-auto">
                 <div className="">
                     <img className="max-w-16" src={logo} alt="app logo" />
                 </div>
-                <div className="flex items-center gap-2 ">
-                    <input className="border flex w-28 sm:w-36 md:w-92" type="text" onChange={(e)=>setSearchValue(e.target.value)}/>
-                    <FaSearch onClick={()=>handleSearch(searchValue)}/>
+                <div className="flex items-center gap-2 bg-[#111827] border-[2px] border-[#334155]  focus:[#3B82F6] rounded-xl cursor-pointer">
+                    <input className="flex w-28 sm:w-36 md:w-92 max-h-8 focus:outline-none text-white px-2 py-1" type="text" onChange={(e)=>setSearchValue(e.target.value)}/>
+                    <FaSearch onClick={()=>handleSearch(searchValue)} className="text-[#60A5FA] mx-2"/>
                 </div>
                 {
                     menuOpen ? <FaTimes onClick={() => setMenuOpen(false)} className="md:hidden w-4 size-14" /> : <FaBars onClick={() => setMenuOpen(true)} className="md:hidden min-w-4 size-4" />
                 }
 
                 {
-                    menuOpen && <ul className="md:hidden absolute top-20 right-4 bg-white flex flex-col  gap-4 text-black p-4 rounded-md z-100">
+                    menuOpen && <ul className="md:hidden absolute top-20 right-4 bg-white flex flex-col  gap-4 text-black p-4 rounded-md z-100  ">
                         <li>Home</li>
                         <li>Movies</li>
                         <li>TV Shows</li>
                     </ul>
                 }
 
-                <ul className="hidden md:flex items-center gap-8 text-white">
-                    <li>Home</li>
-                    <li>Movies</li>
-                    <li>TV Shows</li>
+                <ul className="hidden md:flex items-center gap-8 text-[#CBD5E1] ">
+                    <li className="hover:text-[#60A5FA]">Home</li>
+                    <li className="hover:text-[#60A5FA]">Movies</li>
+                    <li className="hover:text-[#60A5FA]">TV Shows</li>
                 </ul>
             </div>
 
