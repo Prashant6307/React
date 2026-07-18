@@ -10,7 +10,6 @@ const RestaurantMenu = () => {
         // const data = await fetch(`https://www.swiggy.com/dapi/menu/pl?page-type=REGULAR_MENU&complete-menu=true&lat=26.7726304&lng=80.9035811&restaurantId=575412&catalog_qa=undefined&submitAction=ENTER`)
 
         // const res = await data.json()
-        console.log(data);
     }
 
     return (

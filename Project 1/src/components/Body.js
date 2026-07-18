@@ -4,7 +4,7 @@ import Shimmer from "./Shimmer"
 
 const Body = () => {
     const [searchText, setSearchText] = useState("")
-    const [listOfRestaurant, setlistOfRestaurant] = useState([])
+    const [listOfRestaurant, setListOfRestaurant] = useState([])
     const [filteredListOfRestaurant , setFilteredListOfRestaurant] = useState([])
 
     useEffect(() => {
@@ -14,8 +14,8 @@ const Body = () => {
     const fetchData = async () => {
         const data = await fetch(`https://www.swiggy.com/dapi/restaurants/list/v5?lat=26.7726304&lng=80.9035811&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING`)
         const json = await data.json()
-        console.log(json);
-        setlistOfRestaurant(json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants)
+
+        setListOfRestaurant(json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants)
         setFilteredListOfRestaurant(json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants)
     }
 

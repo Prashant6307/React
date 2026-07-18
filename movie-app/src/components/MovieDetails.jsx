@@ -16,7 +16,7 @@ function MovieDetails() {
     const carouselRef = useRef()
     const similarRef = useRef()
 
-    console.log(trailer);
+
 
 
     // const playTrailer = () => {
@@ -28,7 +28,6 @@ function MovieDetails() {
         const fetchMovieDetails = async (movieId) => {
             const res = await fetch(`https://api.themoviedb.org/3/movie/${movieId}?api_key=${API_KEY}`)
             const data = await res.json()
-            console.log(data);
             setDetails(data)
         }
         fetchMovieDetails(movieId)

@@ -15,7 +15,6 @@ function Home({ searchResults }) {
         }
         fetchMovies();
     }, [])
-    console.log(movies);
 
     return (
 

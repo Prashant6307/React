@@ -2,19 +2,18 @@ import { useState } from "react"
 import logo from "../images/logo-bg2.png"
 import { FaSearch, FaBars, FaTimes } from "react-icons/fa"
 import {API_KEY} from "../api/tmdb"
-
+import { useNavigate } from "react-router-dom";
 
 function Header({setSearchResults}) {
     const [menuOpen, setMenuOpen] = useState(false)
     const [searchValue, setSearchValue] = useState("")
-    
+    const navigate = useNavigate();
 
     const handleSearch = async(value) => {
         const res = await fetch(`https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${value}`)
         const data = await res.json()
-        console.log(data);
         setSearchResults(data.results)
-        
+        navigate(`/search?query=${value}`)
     }
     return (
         <div className="bg-[rgba(7,11,20,0.85)]">

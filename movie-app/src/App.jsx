@@ -4,6 +4,8 @@ import Header from "./components/Header";
 import { useState } from "react";
 import MovieDetails from "./components/MovieDetails";
 import Footer from "./components/Footer";
+import SearchResults from "./components/SearchResults";
+
 
 
 function App() {
@@ -14,10 +16,18 @@ function App() {
       <Header setSearchResults={setSearchResults} />
       <Routes>
 
-        <Route path="/" element={<Home searchResults={searchResults} />} />
+        <Route 
+        path="/" 
+        element={<Home searchResults={searchResults} />} />
+
         <Route
           path="/movie/:movieId"
           element={<MovieDetails />}
+        />
+
+        <Route
+          path="/search"
+          element={<SearchResults />}
         />
       
       </Routes>
