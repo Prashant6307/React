@@ -5,6 +5,8 @@ import { useState } from "react";
 import MovieDetails from "./components/MovieDetails";
 import Footer from "./components/Footer";
 import SearchResults from "./components/SearchResults";
+import Movies from "./components/Movies";
+import CategoryNav from "./components/CategoryNav";
 
 
 
@@ -14,6 +16,7 @@ function App() {
 
     <BrowserRouter>
       <Header setSearchResults={setSearchResults} />
+      <CategoryNav />
       <Routes>
 
         <Route 
@@ -28,6 +31,11 @@ function App() {
         <Route
           path="/search"
           element={<SearchResults />}
+        />
+
+        <Route
+          path="/movies/:category"
+          element={<Movies />}
         />
       
       </Routes>
