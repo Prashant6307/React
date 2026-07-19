@@ -7,6 +7,10 @@ function CategoryNav() {
 
     const category = location.pathname.split("/")[2];
 
+    const isTV = location.pathname.includes("tv-shows");
+
+    const path = isTV ? "tv-shows" : "movies";
+
 
     const categories = [
         {
@@ -22,28 +26,30 @@ function CategoryNav() {
             value: "trending"
         },
         {
-            name: "Upcoming",
-            value: "upcoming"
+            name: isTV ? "Airing Today" : "Upcoming",
+            value: isTV ? "airing_today" : "upcoming"
         }
     ];
 
 
     return (
-        <div className="bg-black text-white flex gap-8 justify-center py-4 ">
+        <div className="bg-black text-white flex gap-8 justify-center py-4">
 
             {
                 categories.map((item) => (
 
                     <button
                         key={item.value}
-                        onClick={() => navigate(`/movies/${item.value}`)}
-                        className={`px-4 py-2 cursor-pointer font-bold text-2xl ${category === item.value
+                        onClick={() => navigate(`/${path}/${item.value}`)}
+                        className={`px-4 py-2 cursor-pointer font-bold text-2xl ${
+                            category === item.value
                             ? "text-purple-500"
                             : "text-gray-400"
-                            }`}
+                        }`}
                     >
                         {item.name}
                     </button>
+
                 ))
             }
 

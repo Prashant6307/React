@@ -7,6 +7,7 @@ import Footer from "./components/Footer";
 import SearchResults from "./components/SearchResults";
 import Movies from "./components/Movies";
 import CategoryNav from "./components/CategoryNav";
+import TvShows from "./components/TvShows";
 
 
 
@@ -36,6 +37,13 @@ function App() {
         <Route
           path="/movies/:category"
           element={<Movies />}
+        />
+
+        <Route path="/tv-shows" element={<TvShows />} />
+        
+        <Route
+          path="/tv-shows/:category"
+          element={<TvShows searchResults={searchResults}/>}
         />
       
       </Routes>
