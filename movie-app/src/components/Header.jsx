@@ -11,10 +11,15 @@ function Header({ setSearchResults }) {
     const navigate = useNavigate();
 
     const handleSearch = async (value) => {
-        if (!value) return
-        const res = await fetch(`https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${value}`)
+        if (!value.trim()) return
+
+        const res = await fetch(`https://api.themoviedb.org/3/search/multi?api_key=${API_KEY}&query=${value}`)
         const data = await res.json()
-        setSearchResults(data.results)
+        setSearchResults(
+            data.results.filter(
+                item => item.media_type === "movie" || item.media_type === "tv"
+            )
+        )
         navigate(`/search?query=${value}`)
     }
     return (
@@ -26,7 +31,11 @@ function Header({ setSearchResults }) {
                     </Link>
                 </div>
                 <div className="flex items-center gap-2 bg-[#111827] border-[2px] border-[#334155]  focus:[#3B82F6] rounded-xl cursor-pointer">
-                    <input className="flex w-28 sm:w-36 md:w-92 max-h-8 focus:outline-none text-white px-2 py-1" type="text" onChange={(e) => setSearchValue(e.target.value)} />
+                    <input className="flex w-28 sm:w-36 md:w-92 max-h-8 focus:outline-none text-white px-2 py-1" type="text" onChange={(e) => setSearchValue(e.target.value)} onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                            handleSearch(searchValue)
+                        }
+                    }} />
                     <FaSearch onClick={() => handleSearch(searchValue)} className="text-[#60A5FA] mx-2" />
                 </div>
                 {

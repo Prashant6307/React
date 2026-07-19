@@ -2,15 +2,15 @@ import { useEffect, useState } from "react"
 import { API_KEY } from "../api/tmdb"
 import { useParams } from "react-router-dom"
 import ShowCard from "./ShowCard"
+import Pagination from "./Pagination";
+import { useSearchParams } from "react-router-dom";
 
 function TvShows() {
 
     const { category = "popular" } = useParams();
-
     const [show, setShow] = useState([]);
-
-
-
+    const [searchParams, setSearchParams] = useSearchParams();
+    const page = Number(searchParams.get("page")) || 1;
 
 
     useEffect(() => {
@@ -24,14 +24,16 @@ function TvShows() {
                 url = `tv/${category}`
             }
             const res = await fetch(
-                `https://api.themoviedb.org/3/${url}?api_key=${API_KEY}`
+                `https://api.themoviedb.org/3/${url}?api_key=${API_KEY}&page=${page}`
             )
             const data = await res.json();
             setShow(data.results || []);
         }
-        getCategories(category);
+        getCategories(category)
 
-    }, [category])
+        
+
+    }, [category, page])
 
 
     return (
@@ -57,6 +59,11 @@ function TvShows() {
                     }
 
                 </div>
+
+                <Pagination
+                    page={page}
+                    setSearchParams={setSearchParams}
+                />
             </div>
         </div>
     )
