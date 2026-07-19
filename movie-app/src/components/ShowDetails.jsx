@@ -4,56 +4,65 @@ import { useEffect, useRef, useState } from "react"
 import "../App.css"
 import play_btn from "../images/play-btn.png"
 
-function MovieDetails() {
+function ShowDetails() {
     const [details, setDetails] = useState(null)
     const [cast, setCast] = useState([])
     const [trailer, setTrailer] = useState(null)
-    const [similarMovies, setSimilarMovies] = useState([])
+    const [similarShows, setSimilarShows] = useState([])
     const [showTrailer, setShowTrailer] = useState(false)
 
-    const { movieId } = useParams()
+    const { showId } = useParams()
     const navigate = useNavigate()
     const carouselRef = useRef()
     const similarRef = useRef()
 
+
+
+
+    // const playTrailer = () => {
+    //     window.open(`https://youtube.com/watch?v=${trailer.key}`)
+    // }
+
+
     useEffect(() => {
-        const fetchMovieDetails = async (movieId) => {
-            const res = await fetch(`https://api.themoviedb.org/3/movie/${movieId}?api_key=${API_KEY}`)
+        const fetchShowDetails = async (showId) => {
+            const res = await fetch(`https://api.themoviedb.org/3/tv/${showId}?api_key=${API_KEY}`)
             const data = await res.json()
             setDetails(data)
         }
-        fetchMovieDetails(movieId)
+        fetchShowDetails(showId)
 
-        const getCast = async (movieId) => {
-            const res = await fetch(`https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=${API_KEY}`)
+        const getCast = async (showId) => {
+            const res = await fetch(`https://api.themoviedb.org/3/tv/${showId}/credits?api_key=${API_KEY}`)
             const data = await res.json()
             setCast(data)
         }
-        getCast(movieId)
+        getCast(showId)
 
-        const getTrailer = async (movieId) => {
+        const getTrailer = async (showId) => {
             const videoRes = await fetch(
-                `https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=${API_KEY}`
+                `https://api.themoviedb.org/3/tv/${showId}/videos?api_key=${API_KEY}`
             )
 
             const videoData = await videoRes.json()
 
-            const movieTrailer = videoData.results.find(
+            const movieTrailer = videoData.results?.find(
                 video => video.type === "Trailer" && video.site === "YouTube"
             )
 
             setTrailer(movieTrailer)
         }
-        getTrailer(movieId)
+        getTrailer(showId)
 
-        const getSimilarMovies = async (movieId) => {
-            const res = await fetch(`https://api.themoviedb.org/3/movie/${movieId}/similar?api_key=${API_KEY}`)
+        const getSimilarShows = async (showId) => {
+            const res = await fetch(`https://api.themoviedb.org/3/tv/${showId}/similar?api_key=${API_KEY}`)
             const data = await res.json()
-            setSimilarMovies(data)
+            setSimilarShows(data)
+            
         }
-        getSimilarMovies(movieId)
+        getSimilarShows(showId)
 
-    }, [movieId])
+    }, [showId])
 
     return (
         <div className="bg-[#070B14] ">
@@ -80,15 +89,22 @@ function MovieDetails() {
                                 <>
                                     <img
                                         src={`https://image.tmdb.org/t/p/w1280${details.backdrop_path}`}
-                                        alt={details.title}
+                                        alt={details.name}
                                         className="w-full h-full object-cover"
                                     />
                                     <div className="absolute p-4 text-gray font-bold bg-gradient-to-r from-[#070B14] via-[#070B14]/70 to-transparent text-gray-200 h-full ">
-                                        <p className=" text-white text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-wide drop-shadow-2xl">{details.title}</p>
+                                        <p className=" text-white text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-wide drop-shadow-2xl">{details.name}</p>
                                         <div className="flex items-center gap-8 my-12 text-3xl">
-                                            <p>⭐{(details.vote_average).toFixed(1)}</p>
-                                            <img src={`https://image.tmdb.org/t/p/w200${details.production_companies[0]?.logo_path}`} alt="" className="max-w-12 bg-white m-1" />
-                                            <p>{details.runtime && (details.runtime / 60).toFixed(1)}hrs</p>
+                                            <p>⭐{(details.vote_average)?.toFixed(1)}</p>
+
+                                            {
+                                                details.production_companies?.[0]?.logo_path && (
+                                                    <img src={`https://image.tmdb.org/t/p/w200${details.production_companies?.[0].logo_path}`} alt="" className="max-w-12 bg-white m-1" />)
+                                            }
+
+                                            <p>
+                                                {details.number_of_seasons} Seasons
+                                            </p>
                                         </div>
                                         <p className="max-w-[50%] text-[8px] sm:text-sm md:text-lg lg:text-xl ">{details.overview}</p>
 
@@ -150,33 +166,36 @@ function MovieDetails() {
 
 
                     <div className="relative p-4" >
-                        <h2 className="text-white font-bold text-xl mt-8 ">Similar Movies</h2>
+                        <h2 className="text-white font-bold text-xl mt-8 ">
+                            {
+                            similarShows.results?.length === 0 ? "No similar shows found" : "Similar Shows"
+                        }</h2>
                         <div ref={similarRef} className="mt-8 flex gap-4 overflow-x-auto scrollbar-hide scroll-smooth " >
 
                             {
-                                similarMovies.results?.filter((result) => result.backdrop_path).map((result) => (
-                                    <div onClick={() => navigate(`/movie/${result.id}`)}
+                                similarShows.results?.filter((result) => result.poster_path).map((result) => (
+                                    <div onClick={() => navigate(`/tv-show/${result.id}`)}
                                         key={result.id}
                                         className="min-w-[150px] bg-gray-800 rounded-xl overflow-hidden bg-[#161D2F] border border-[#1E293B] hover:bg-[rgba(59,130,246,0.25)] cursor-pointer"
                                     >
 
                                         <img
                                             src={`https://image.tmdb.org/t/p/w185${result.poster_path}`}
-                                            alt={result.original_title}
+                                            alt={result.name}
                                             className="w-full h-48 object-cover"
                                         />
 
                                         <p className="p-2 font-bold text-gray-300">
-                                            {result.title}
+                                            {result.name}
                                         </p>
 
 
                                         <div className="px-1 py-2">
                                             <p className=" px-2 text-sm text-gray-400">
-                                                Rating: ⭐{(result.vote_average).toFixed(1)}
+                                                Rating: ⭐{(result.vote_average)?.toFixed(1)}
                                             </p>
                                             <p className="px-2 text-sm text-gray-400">
-                                                Release: {(result.release_date)}
+                                                Release: {(result.first_air_date)}
                                             </p>
                                         </div>
 
@@ -208,4 +227,4 @@ function MovieDetails() {
     )
 }
 
-export default MovieDetails
+export default ShowDetails

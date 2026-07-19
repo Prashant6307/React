@@ -8,6 +8,7 @@ import SearchResults from "./components/SearchResults";
 import Movies from "./components/Movies";
 import CategoryNav from "./components/CategoryNav";
 import TvShows from "./components/TvShows";
+import ShowDetails from "./components/ShowDetails";
 
 
 
@@ -40,10 +41,15 @@ function App() {
         />
 
         <Route path="/tv-shows" element={<TvShows />} />
-        
+
         <Route
           path="/tv-shows/:category"
           element={<TvShows searchResults={searchResults}/>}
+        />
+
+        <Route
+          path="/tv-show/:showId"
+          element={<ShowDetails />}
         />
       
       </Routes>

@@ -1,45 +1,42 @@
 import { useEffect, useState } from "react"
 import logo_bg from "../images/logo-bg.png"
 
-function Footer() {
 
-    // const [count, setCount] = useState(0)
-
-    const [tagline, setTagline] = useState("");
-    const [index, setIndex] = useState(0);
-
-    const taglines = [
+const taglines = [
         "Explore the universe of movies",
         "Your galaxy of entertainment",
         "Discover movies beyond the ordinary",
         "Orbit through endless stories"
-    ];
+    ]
+
+function Footer() {
+
+    const [tagline, setTagline] = useState("")
+    const [index, setIndex] = useState(0)
 
     useEffect(() => {
-        let i = 0;
-        let timeout;
+        let i = 0
+        let timeout
 
         const typing = setInterval(() => {
-            setTagline(taglines[index].slice(0, i));
-
-            i++;
+            setTagline(taglines[index].slice(0, i))
+            i++
 
             if (i > taglines[index].length) {
-                clearInterval(typing);
+                clearInterval(typing)
 
                 timeout = setTimeout(() => {
-                    setIndex((prev) => (prev + 1) % taglines.length);
-                }, 2000);
+                    setIndex((prev) => (prev + 1) % taglines.length)
+                }, 2000)
             }
 
         }, 80);
 
         return () => {
-            clearInterval(typing);
-            clearTimeout(timeout);
+            clearInterval(typing)
+            clearTimeout(timeout)
         };
-
-    }, [index]);
+    }, [index])
 
 
     return (
