@@ -11,7 +11,7 @@ function TvShows() {
     const [show, setShow] = useState([]);
     const [searchParams, setSearchParams] = useSearchParams();
     const page = Number(searchParams.get("page")) || 1;
-
+    const [totalPages, setTotalPages] = useState(1)
 
     useEffect(() => {
         const getCategories = async (category) => {
@@ -28,6 +28,7 @@ function TvShows() {
             )
             const data = await res.json();
             setShow(data.results || []);
+            setTotalPages(data.total_pages)
         }
         getCategories(category)
 
@@ -63,6 +64,7 @@ function TvShows() {
                 <Pagination
                     page={page}
                     setSearchParams={setSearchParams}
+                    totalPages={totalPages}
                 />
             </div>
         </div>
